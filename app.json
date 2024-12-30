@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WebViewProject",
-    "slug": "WebViewProject",
+    "name": "Fluxnet",
+    "slug": "Fluxnet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,10 +19,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fluxnet.fluxnet"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.ico"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4732c179-5207-48e3-9b92-e3b41c41a7e7"
+      }
     }
   }
 }

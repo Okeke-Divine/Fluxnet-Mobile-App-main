@@ -1,11 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, StatusBar } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 export default function App() {
+  const FLUXNET_URL = 'https://fluxnet.com.ng/?view=app';
+  
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <StatusBar barStyle="dark-content" />
+      <WebView 
+        source={{ uri: FLUXNET_URL }} 
+        style={styles.webview}
+      />
     </View>
   );
 }
@@ -14,7 +20,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  webview: {
+    flex: 1,
   },
 });
