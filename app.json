@@ -1,49 +1,42 @@
 {
+  "cli": {
+    "version": ">= 14.2.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true,
+      "distribution": "store",
+      "releaseChannel": "production",
+      "android": {
+        "buildType": "aab"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  },
+  "extra": {
+    "eas": {
+      "projectId": "2463b9e0-ad40-42f2-91af-e8ed18ec8bb4"
+    }
+  },
   "expo": {
-    "name": "Fluxnet",
-    "slug": "Fluxnet",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.fluxnet.fluxnet",
-      "intentFilters": [
-        {
-          "action": "VIEW",
-          "data": [
-            {
-              "scheme": "https",
-              "host": "fluxnet.com.ng"
-            }
-          ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
-        }
-      ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.ico"
+      "package": "com.fluxinet.fluxinet"
     },
     "extra": {
       "eas": {
-        "projectId": "4732c179-5207-48e3-9b92-e3b41c41a7e7"
+        "projectId": "2463b9e0-ad40-42f2-91af-e8ed18ec8bb4"
       }
-    }
+    },
+    "owner": "divinho"
   }
 }
