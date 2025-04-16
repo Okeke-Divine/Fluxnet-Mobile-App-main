@@ -1,10 +1,12 @@
-import React, { Component, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, StatusBar } from 'react-native';
+import React, { Component, useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, StatusBar, BackHandler,ActivityIndicator  } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 export default function App() {
-  const FLUXNET_URL = 'https://fluxnet.com.ng/?view=app';
+  const FLUXNET_URL = 'https://fluxinet.com/?view=app';
   const [isOffline, setIsOffline] = useState(false);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const webViewRef = useRef(null);
 
   const handleReload = () => {
     setIsOffline(false);
@@ -12,10 +14,29 @@ export default function App() {
 
   const handleShouldStartLoad = (event) => {
     const { url } = event;
-
-    // Prevent the WebView from navigating externally, let all links load inside WebView
     return true;
   };
+
+  const onNavigationStateChange = (navState) => {
+    setCanGoBack(navState.canGoBack);
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      if (canGoBack) {
+        webViewRef.current.goBack();
+        return true; // Prevent default behavior
+      }
+      return false; // Default behavior (exit app)
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [canGoBack]);
 
   return (
     <View style={styles.container}>
@@ -29,8 +50,18 @@ export default function App() {
         </View>
       ) : (
         <WebView
+          ref={webViewRef}
           source={{ uri: FLUXNET_URL }}
           style={styles.webview}
+          onNavigationStateChange={onNavigationStateChange}
+          startInLoadingState={true}
+          renderLoading={() => (
+            <ActivityIndicator
+              color='black'
+              size='large'
+              style={styles.flexContainer}
+            />
+          )}
         />
       )}
     </View>
