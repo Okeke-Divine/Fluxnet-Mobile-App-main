@@ -30,13 +30,22 @@
   },
   "expo": {
     "android": {
-      "package": "com.fluxinet.fluxinet"
+      "package": "com.fluxinet.fluxinet",
+      "intentFilters": [{
+        "action": "VIEW",
+        "data": [{
+          "scheme": "fluxinet",
+          "host": "callback"
+        }],
+        "category": ["BROWSABLE", "DEFAULT"]
+      }]
     },
     "extra": {
       "eas": {
         "projectId": "2463b9e0-ad40-42f2-91af-e8ed18ec8bb4"
       }
     },
+    "scheme": "fluxinet",
     "owner": "divinho"
   }
 }

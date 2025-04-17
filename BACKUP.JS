@@ -13,23 +13,59 @@ export default function App() {
 
   useEffect(() => {
     const handleDeepLink = (event) => {
-      if (event.url.startsWith('com.fluxinet.fluxinet://callback')) {
+      if (event.url.startsWith('com.fluxinet.fluxinet//callback')) {
         // Extract token/parameters from URL
         const token = new URL(event.url).searchParams.get('token');
-
+        
         // Pass it back to your WebView
         webViewRef.current.injectJavaScript(`
           window.handleAuthCallback('${token}');
         `);
       }
     };
-
+  
     Linking.addEventListener('url', handleDeepLink);
     return () => Linking.removeEventListener('url', handleDeepLink);
   }, []);
 
+  const handleGoogleAuth = async (url) => {
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        const result = await InAppBrowser.openAuth(url, 'com.fluxinet.fluxinet//callback', {
+          // Android options
+          dismissButtonStyle: 'cancel',
+          preferredBarTintColor: '#ffffff',
+          preferredControlTintColor: '#007BFF',
+          // iOS options
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalEnabled: true,
+          enableBarCollapsing: false,
+        });
+
+        if (result.type === 'success' && result.url) {
+          // Handle successful auth
+          webViewRef.current.injectJavaScript(`
+            window.location.href = '${result.url}';
+          `);
+        }
+      } else {
+        // Fallback to regular browser if InAppBrowser not available
+        Linking.openURL(url);
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
+  };
+
   const handleReload = () => {
     setIsOffline(false);
+  };
+
+  const handleShouldStartLoad = (event) => {
+    const { url } = event;
+    return true;
   };
 
   const onNavigationStateChange = (navState) => {
@@ -77,6 +113,16 @@ export default function App() {
               style={styles.flexContainer}
             />
           )}
+          onShouldStartLoadWithRequest={(request) => {
+            // Detect Google auth URLs
+            if (request.url.includes('accounts.google.com') ||
+              request.url.includes('oauth2/auth') ||
+              request.url.includes('signin/oauth')) {
+              handleGoogleAuth(request.url);
+              return false;
+            }
+            return true;
+          }}
         />
       )}
     </View>
